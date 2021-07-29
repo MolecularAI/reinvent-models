@@ -1,0 +1,3 @@
+from testing.reinvent_core.vocabulary_tests.test_create_vocabulary import TestCreateVocabulary
+from testing.reinvent_core.vocabulary_tests.test_tokenizer import TestSmilesTokenizer
+from testing.reinvent_core.vocabulary_tests.test_vocabulary import TestVocabulary
