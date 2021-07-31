@@ -7,7 +7,7 @@ from reinvent_models.lib_invent.models.vocabulary import Vocabulary
 from testing.fixtures.test_data import SIMPLE_TOKENS
 
 
-class Test_Vocabulary(unittest.TestCase):
+class TestVocabulary(unittest.TestCase):
 
     def setUp(self):
         self.voc = Vocabulary(tokens=SIMPLE_TOKENS)

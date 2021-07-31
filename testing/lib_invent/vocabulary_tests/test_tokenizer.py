@@ -3,12 +3,10 @@ import unittest
 from reinvent_models.lib_invent.models.vocabulary import SMILESTokenizer
 
 
-class Test_SMILES_Tokenizer(unittest.TestCase):
-
+class TestSmilesTokenizer(unittest.TestCase):
 
     def setUp(self):
         self.tokenizer = SMILESTokenizer()
-
 
     def test_tokenize(self):
         self.assertListEqual(
@@ -21,7 +19,6 @@ class Test_SMILES_Tokenizer(unittest.TestCase):
             self.tokenizer.tokenize("C%12CC(Br)C1CC%121[ClH]", with_begin_and_end=False),
             ["C", "%12", "C", "C", "(", "Br", ")", "C", "1", "C", "C", "%12", "1", "[ClH]"]
         )
-
 
     def test_untokenize(self):
         self.assertEqual(

@@ -4,6 +4,8 @@
   "DEVELOPMENT_ENVIRONMENT": true,
   "PRIOR_PATH": "/path/to/reinvents/prior",
   "LIBINVENT_PRIOR_PATH": "/path/libinvent/prior",
+  "OLD_PRIOR_PATH": null,
+  "OLD_LIBINVENT_PRIOR_PATH": null,
   "COMPONENT_SPECIFIC":
   {
     "AZDOCK": {
