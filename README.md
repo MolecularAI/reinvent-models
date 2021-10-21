@@ -19,11 +19,10 @@ Make sure that you set `MAIN_TEST_PATH` to a non-existent directory; it is where
 if it is set to an existing directory, that directory will be removed once the tests have finished.
 
 For the unit tests in this repository, make sure the paths below are set:
- `"PRIOR_PATH": "/path/to/reinvents/prior",
-  "LIBINVENT_PRIOR_PATH": "/path/libinvent/prior"`
+ `"PRIOR_PATH": "/path/to/reinvents/prior"`
+ `"LIBINVENT_PRIOR_PATH": "/path/libinvent/prior"`
 
-Once you have created a config file, you can run the tests, located in the 
-`testing` directory, by running
+Once you have created a config file, you can run the tests, located in the directory, by running
 
 ```
 $ python main_test.py
