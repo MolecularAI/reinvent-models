@@ -11,7 +11,7 @@ setuptools.setup(
     description="Generative models for Reinvent",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://bitbucket.astrazeneca.net/scm/com/reinvent_models.git",
+    url="",
     packages=setuptools.find_packages(exclude=('testing',)),
     classifiers=[
         "Programming Language :: Python :: 3",
