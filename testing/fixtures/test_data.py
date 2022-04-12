@@ -23,3 +23,8 @@ AMOXAPINE = 'C1CN(CCN1)C2=NC3=CC=CC=C3OC4=C2C=C(C=C4)Cl'
 GENTAMICIN = 'CC(C1CCC(C(O1)OC2C(CC(C(C2O)OC3C(C(C(CO3)(C)O)NC)O)N)N)N)NC'
 METHOXYHYDRAZINE = 'CONN'
 HYDROPEROXYMETHANE = 'COO'
+
+WARHEAD_PAIR = '*C1CCCCC1|*C1CCCC(ON)C1'
+
+IBUPROFEN_TOKENIZED = ["^", "C", "C", "(", "C", ")", "C", "c", "1", "c", "c", "c", "(", "c", "c", "1", ")", "[C@@H]",
+                       "(", "C", ")", "C", "(", "=", "O", ")", "O", "$"]

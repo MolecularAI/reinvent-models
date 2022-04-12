@@ -8,8 +8,8 @@ import torch
 import torch.nn as tnn
 import torch.nn.functional as tnnf
 
+from reinvent_models.model_factory.enums.model_mode_enum import ModelModeEnum
 from reinvent_models.reinvent_core.models import vocabulary as mv
-# from models import vocabulary as mv
 
 
 class RNN(tnn.Module):
@@ -102,6 +102,7 @@ class Model:
         self.vocabulary = vocabulary
         self.tokenizer = tokenizer
         self.max_sequence_length = max_sequence_length
+        self._model_modes = ModelModeEnum()
 
         if not isinstance(network_params, dict):
             network_params = {}
@@ -111,6 +112,14 @@ class Model:
             self.network.cuda()
 
         self._nll_loss = tnn.NLLLoss(reduction="none")
+
+    def set_mode(self, mode: str):
+        if mode == self._model_modes.TRAINING:
+            self.network.train()
+        elif mode == self._model_modes.INFERENCE:
+            self.network.eval()
+        else:
+            raise ValueError(f"Invalid model mode '{mode}")
 
     @classmethod
     def load_from_file(cls, file_path: str, sampling_mode=False):
@@ -229,3 +238,6 @@ class Model:
 
         sequences = torch.cat(sequences, 1)
         return sequences.data, nlls
+
+    def get_network_parameters(self):
+        return self.network.parameters()

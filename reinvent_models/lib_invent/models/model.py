@@ -8,11 +8,12 @@ import torch.nn as tnn
 
 from reinvent_models.lib_invent.enums.generative_model_regime import GenerativeModelRegimeEnum
 from reinvent_models.lib_invent.models.decorator import Decorator
+from reinvent_models.model_factory.enums.model_mode_enum import ModelModeEnum
 
 
 class DecoratorModel:
 
-    def __init__(self, vocabulary, decorator, max_sequence_length=256, no_cuda=False, mode="train"):
+    def __init__(self, vocabulary, decorator, max_sequence_length=256, no_cuda=False, mode=ModelModeEnum().TRAINING):
         """
         Implements the likelihood and scaffold_decorating functions of the decorator model.
         :param vocabulary: A DecoratorVocabulary instance with the vocabularies of both the encoder and decoder.
@@ -35,7 +36,7 @@ class DecoratorModel:
         self.set_mode(mode)
 
     @classmethod
-    def load_from_file(cls, path, mode="train"):
+    def load_from_file(cls, path, mode=ModelModeEnum().TRAINING):
         """
         Loads a model from a single file
         :param path: Path to the saved model.
@@ -135,3 +136,6 @@ class DecoratorModel:
                              for seq in torch.cat(sequences, 1).data.cpu().numpy()]
         scaffold_smiles = [self.vocabulary.decode_scaffold(seq) for seq in scaffold_seqs.data.cpu().numpy()]
         return zip(scaffold_smiles, decoration_smiles, nlls.data.cpu().numpy().tolist())
+
+    def get_network_parameters(self):
+        return self.network.parameters()

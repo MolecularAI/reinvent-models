@@ -1,0 +1,2 @@
+from testing.link_invent.model_tests.test_likelihood import TestLinkInventLikelihoodSMILES
+from testing.link_invent.model_tests.test_link_invent_model import TestLinkInventModel

@@ -17,7 +17,7 @@ class TestModelFunctions(unittest.TestCase):
     def setUp(self):
         set_default_device_cuda()
         self.workfolder = MAIN_TEST_PATH
-        self.output_file = os.path.join(self.workfolder, "new_model.ckpt")
+        self.output_file = os.path.join(self.workfolder, "generative_model.ckpt")
         if not os.path.isdir(self.workfolder):
             os.makedirs(self.workfolder)
         self.model = Model.load_from_file(PRIOR_PATH)
@@ -25,6 +25,8 @@ class TestModelFunctions(unittest.TestCase):
     def tearDown(self):
         if os.path.isdir(self.workfolder):
             shutil.rmtree(self.workfolder)
+
+        set_default_device_cuda(dont_use_cuda=True)
 
     def test_likelihoods_from_model_1(self):
         likelihoods = self.model.likelihood_smiles([PROPANE, BENZENE])

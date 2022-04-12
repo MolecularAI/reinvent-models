@@ -10,6 +10,8 @@ from testing.reinvent_core.dataset_test import *
 from testing.lib_invent.vocabulary_tests import *
 from testing.lib_invent.model_tests import *
 
+from testing.link_invent import *
+from testing.patformer import *
 
 if __name__ == '__main__':
     unittest.main()
