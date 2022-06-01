@@ -19,6 +19,9 @@ class TestDatasetFunctions(unittest.TestCase):
         self.Dataset = Dataset(self.smiles, SIMPLE_TOKENS, SMILESTokenizer)
         self.coldata = tud.DataLoader(self.smiles, 1, collate_fn=Dataset.collate_fn)
 
+    def tearDown(self):
+        set_default_device_cuda(dont_use_cuda=True)
+
     def test_dataset_functions_1(self):
         self.assertEqual(len(self.coldata), 5)
 
