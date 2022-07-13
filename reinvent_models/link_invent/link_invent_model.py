@@ -10,6 +10,7 @@ from reinvent_models.link_invent.model_vocabulary.paired_model_vocabulary import
 from reinvent_models.model_factory.enums.model_mode_enum import ModelModeEnum
 from reinvent_models.model_factory.generative_model_base import GenerativeModelBase
 from reinvent_models.link_invent.networks import EncoderDecoder
+from reinvent_models.reinvent_core.utils import dynamic_tensor_allocation, load_with_dynamic_map_location
 
 
 class LinkInventModel:
@@ -42,7 +43,8 @@ class LinkInventModel:
         :param mode: Mode in which the model should be initialized
         :return: An instance of the network
         """
-        data = from_dict(LinkInventModelParameterDTO, torch.load(path_to_file))
+        data = from_dict(LinkInventModelParameterDTO, load_with_dynamic_map_location(path_to_file))
+
         network = EncoderDecoder(**data.network_parameter)
         network.load_state_dict(data.network_state)
         model = LinkInventModel(vocabulary=data.vocabulary, network=network,
@@ -85,12 +87,13 @@ class LinkInventModel:
         """
         batch_size = inputs.size(0)
 
-        input_vector = torch.full((batch_size, 1), self.vocabulary.target.vocabulary["^"],
-                                  dtype=torch.long).cuda()  # (batch, 1)
+        input_vector = dynamic_tensor_allocation(torch.full((batch_size, 1), self.vocabulary.target.vocabulary["^"],
+                                  dtype=torch.long)) # (batch, 1)
         seq_lengths = torch.ones(batch_size)  # (batch)
         encoder_padded_seqs, hidden_states = self.network.forward_encoder(inputs, input_seq_lengths)
-        nlls = torch.zeros(batch_size).cuda()
-        not_finished = torch.ones(batch_size, 1, dtype=torch.long).cuda()
+        nlls = dynamic_tensor_allocation(torch.zeros(batch_size))
+        not_finished = dynamic_tensor_allocation(torch.ones(batch_size, 1, dtype=torch.long))
+
         sequences = []
         for _ in range(self.max_sequence_length - 1):
             logits, hidden_states, _ = self.network.forward_decoder(

@@ -3,6 +3,8 @@ import torch
 import torch.utils.data as tud
 import torch.nn.utils.rnn as tnnur
 
+from reinvent_models.reinvent_core.utils import dynamic_tensor_allocation
+
 
 class Dataset(tud.Dataset):
     """Dataset that takes a list of SMILES only."""
@@ -75,4 +77,7 @@ def pad_batch(encoded_seqs):
     :return: A tensor with the sequences correctly padded.
     """
     seq_lengths = torch.tensor([len(seq) for seq in encoded_seqs], dtype=torch.int64)  # pylint: disable=not-callable
-    return (tnnur.pad_sequence(encoded_seqs, batch_first=True).cuda(), seq_lengths)
+    return (
+        dynamic_tensor_allocation(tnnur.pad_sequence(encoded_seqs, batch_first=True)),
+        seq_lengths
+    )

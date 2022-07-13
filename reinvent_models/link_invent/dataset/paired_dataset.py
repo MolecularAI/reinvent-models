@@ -6,6 +6,7 @@ from torch.nn.utils.rnn import pad_sequence
 from torch.utils import data as tud
 
 from reinvent_models.link_invent.model_vocabulary.paired_model_vocabulary import PairedModelVocabulary
+from reinvent_models.reinvent_core.utils import dynamic_tensor_allocation
 
 
 class PairedDataset(tud.Dataset):
@@ -50,4 +51,4 @@ class PairedDataset(tud.Dataset):
         :return: A tensor with the sequences correctly padded.
         """
         seq_lengths = torch.tensor([len(seq) for seq in encoded_seqs], dtype=torch.int64)
-        return pad_sequence(encoded_seqs, batch_first=True).cuda(), seq_lengths
+        return dynamic_tensor_allocation(pad_sequence(encoded_seqs, batch_first=True)), seq_lengths

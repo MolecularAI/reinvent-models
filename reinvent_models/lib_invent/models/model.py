@@ -9,6 +9,7 @@ import torch.nn as tnn
 from reinvent_models.lib_invent.enums.generative_model_regime import GenerativeModelRegimeEnum
 from reinvent_models.lib_invent.models.decorator import Decorator
 from reinvent_models.model_factory.enums.model_mode_enum import ModelModeEnum
+from reinvent_models.reinvent_core.utils import dynamic_tensor_allocation, load_with_dynamic_map_location
 
 
 class DecoratorModel:
@@ -43,7 +44,7 @@ class DecoratorModel:
         :param mode: Mode in which the model should be initialized.
         :return: An instance of the RNN.
         """
-        data = torch.load(path)
+        data = load_with_dynamic_map_location(path)
 
         decorator = Decorator(**data["decorator"]["params"])
         decorator.load_state_dict(data["decorator"]["state"])
@@ -112,13 +113,14 @@ class DecoratorModel:
         """
         batch_size = scaffold_seqs.size(0)
 
-        input_vector = torch.full(
-            (batch_size, 1), self.vocabulary.decoration_vocabulary["^"], dtype=torch.long).cuda()  # (batch, 1)
+        input_vector = dynamic_tensor_allocation(torch.full(
+                (batch_size, 1), self.vocabulary.decoration_vocabulary["^"], dtype=torch.long))
+
         # print(f"input_vector: {input_vector}")
         seq_lengths = torch.ones(batch_size)  # (batch)
         encoder_padded_seqs, hidden_states = self.network.forward_encoder(scaffold_seqs, scaffold_seq_lengths)
-        nlls = torch.zeros(batch_size).cuda()
-        not_finished = torch.ones(batch_size, 1, dtype=torch.long).cuda()
+        nlls = dynamic_tensor_allocation(torch.zeros(batch_size))
+        not_finished = dynamic_tensor_allocation(torch.ones(batch_size, 1, dtype=torch.long))
         sequences = []
         for _ in range(self.max_sequence_length - 1):
             logits, hidden_states, _ = self.network.forward_decoder(

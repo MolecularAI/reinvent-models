@@ -7,6 +7,7 @@ from torch import Tensor
 from torch.nn.utils.rnn import pad_sequence
 
 from reinvent_models.link_invent.model_vocabulary.model_vocabulary import ModelVocabulary
+from reinvent_models.reinvent_core.utils import dynamic_tensor_allocation
 
 
 class Dataset(tud.Dataset):
@@ -49,7 +50,7 @@ class Dataset(tud.Dataset):
         :return: A tensor with the sequences correctly padded.
         """
         seq_lengths = torch.tensor([len(seq) for seq in encoded_seqs], dtype=torch.int64)
-        return pad_sequence(encoded_seqs, batch_first=True).cuda(), seq_lengths
+        return dynamic_tensor_allocation(pad_sequence(encoded_seqs, batch_first=True)), seq_lengths
 
 
 
