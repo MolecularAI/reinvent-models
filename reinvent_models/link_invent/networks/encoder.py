@@ -3,6 +3,7 @@ from torch import nn as tnn
 from torch.nn.utils import rnn as tnnur
 
 from reinvent_models.model_factory.enums.model_parameter_enum import ModelParametersEnum
+from reinvent_models.reinvent_core.utils import dynamic_tensor_allocation
 
 
 class Encoder(tnn.Module):
@@ -54,7 +55,7 @@ class Encoder(tnn.Module):
         return padded_seqs, (hs_h, hs_c)
 
     def _initialize_hidden_state(self, batch_size: int) -> torch.Tensor:
-        return torch.zeros(self.num_layers*2, batch_size, self.num_dimensions).cuda()
+        return dynamic_tensor_allocation(torch.zeros(self.num_layers*2, batch_size, self.num_dimensions))
 
     def get_params(self) -> dict:
         parameter_enums = ModelParametersEnum

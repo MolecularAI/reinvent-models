@@ -7,6 +7,7 @@ import torch
 import torch.nn as tnn
 import torch.nn.utils.rnn as tnnur
 
+from reinvent_models.reinvent_core.utils import dynamic_tensor_allocation
 from reinvent_models.lib_invent.enums.generative_model_parameters import GenerativeModelParametersEnum
 
 
@@ -63,7 +64,7 @@ class Encoder(tnn.Module):
         return padded_seqs, (hs_h, hs_c)
 
     def _initialize_hidden_state(self, batch_size):
-        return torch.zeros(self.num_layers*2, batch_size, self.num_dimensions).cuda()
+        return dynamic_tensor_allocation(torch.zeros(self.num_layers*2, batch_size, self.num_dimensions))
 
     def get_params(self):
         parameter_enums = GenerativeModelParametersEnum
